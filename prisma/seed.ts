@@ -20,12 +20,19 @@ async function testConnection() {
 }
 
 async function main() {
-  const isConnected = testConnection();
-  console.log(isConnected);
+  console.log('🌱 Starting seeding...');
 
+  console.log('Checking connection...');
+  const isConnected = testConnection();
   if (!isConnected) {
     throw new Error('Not connected!');
   }
+
+  console.log('🧹 Cleaning existing data...');
+  await prisma.todo.deleteMany();
+  await prisma.user.deleteMany();
+
+  console.log('Creating data...');
   await prisma.user.createMany({
     data: [
       {
@@ -84,12 +91,14 @@ async function main() {
       },
     ],
   });
+  console.log(`✅ Data created`);
 }
 
 main()
   .then(async () => {
     await prisma.$disconnect();
     await pool.end();
+    process.exit(0);
   })
   .catch(async (e) => {
     console.log(e);
