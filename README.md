@@ -23,11 +23,37 @@
 4. Клонируем репозиторий к себе
 5. Создаем файлик .env, куда пишем данные сверху
 6. Делаем `npm install`(если будут ошибки в консоли, то `npm install --force`)
-7. Выполняем `npx prisma`
-8. Выполняем `npx prisma migrate dev`
-9. Выполняем `npx prisma generate`
-10. Выполняем `npx prisma db seed`
-    1. Если после строки ✅ Data created не вернулось управление, нажмите Ctrl + C
-11. Запустите сервер `npm run dev`
+7. Выполняем
+
+```
+npx prisma
+```
+
+8. Выполняем
+
+```
+   npx prisma migrate dev
+```
+
+9. Выполняем
+
+```
+npx prisma generate
+```
+
+10. Выполняем
+
+```
+npx prisma db seed
+```
+
+Если после строки ✅ Data created не вернулось управление, нажмите Ctrl + C
+
+11. Запустите сервер
+
+```
+npm run dev
+```
+
 12. Перейдите на нужный localhost(можно сделать прямо из консоли, если зажать Ctrl и навести мышку на http://localhost...)
 13. Перейдите по адресу localhost:{ваш порт}/health и localhost:{ваш порт}/getTodos, если данные отобразились, то вы большой молодец
