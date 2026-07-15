@@ -23,7 +23,7 @@ async function main() {
   console.log('🌱 Starting seeding...');
 
   console.log('Checking connection...');
-  const isConnected = testConnection();
+  const isConnected = await testConnection();
   if (!isConnected) {
     throw new Error('Not connected!');
   }
@@ -31,8 +31,10 @@ async function main() {
   console.log('🧹 Cleaning existing data...');
   await prisma.todo.deleteMany();
   await prisma.user.deleteMany();
+  await prisma.product.deleteMany();
+  await prisma.post.deleteMany();
 
-  console.log('Creating data...');
+  console.log('Creating user data...');
   await prisma.user.createMany({
     data: [
       {
@@ -62,6 +64,7 @@ async function main() {
     ],
   });
 
+  console.log('Creating todo data...');
   await prisma.todo.createMany({
     data: [
       {
@@ -91,6 +94,25 @@ async function main() {
       },
     ],
   });
+
+  console.log('Creating post data...');
+  await prisma.post.create({
+    data: {
+      title: 'On holiday!',
+      img: '/images/posts/post-1.jpg',
+    },
+  });
+
+  console.log('Creating product data...');
+  await prisma.product.create({
+    data: {
+      title: 'Фен',
+      description: 'Сушит волосы',
+      price: 10000,
+      img: '/images/products/product-1.jpg',
+    },
+  });
+
   console.log(`✅ Data created`);
 }
 

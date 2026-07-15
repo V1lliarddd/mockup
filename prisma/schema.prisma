@@ -25,6 +25,7 @@ model Product {
   title       String
   description String
   price       Int
+  img         String
 }
 
 model Todo {
