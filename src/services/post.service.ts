@@ -1,5 +1,5 @@
 import { prisma } from '../../prisma/prisma.ts';
-import { IPost } from '../types/todo.types.ts';
+import { IPost } from '../types/types.ts';
 
 class PostService {
   async getAllPosts() {

@@ -1,5 +1,5 @@
 import { prisma } from '../../prisma/prisma.ts';
-import { IProduct } from '../types/todo.types.ts';
+import { IProduct } from '../types/types.ts';
 
 class ProductService {
   async getAllProducts() {

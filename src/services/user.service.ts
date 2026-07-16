@@ -1,5 +1,5 @@
 import { prisma } from '../../prisma/prisma.ts';
-import { IUser } from '../types/todo.types.ts';
+import { IUser } from '../types/types.ts';
 
 class UserService {
   async getAllUsers() {

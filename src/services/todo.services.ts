@@ -1,5 +1,5 @@
 import { prisma } from '../../prisma/prisma.ts';
-import { ITodo } from '../types/todo.types.ts';
+import { ITodo } from '../types/types.ts';
 
 class TodoService {
   async getAllTodos() {
