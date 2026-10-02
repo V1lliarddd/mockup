@@ -20,100 +20,93 @@ async function testConnection() {
 }
 
 async function main() {
-  console.log('🌱 Starting seeding...');
-
-  console.log('Checking connection...');
-  const isConnected = await testConnection();
-  if (!isConnected) {
-    throw new Error('Not connected!');
-  }
-
-  console.log('🧹 Cleaning existing data...');
-  await prisma.todo.deleteMany();
-  await prisma.user.deleteMany();
-  await prisma.product.deleteMany();
-  await prisma.post.deleteMany();
-
-  console.log('Creating user data...');
-  await prisma.user.createMany({
-    data: [
-      {
-        email: 'my-email@mail.ru',
-        firstName: 'Vlad',
-        lastName: 'Saveliev',
-        birthDate: new Date('2004-05-16'),
-      },
-      {
-        email: 'some-cool-email@gmail.com',
-        firstName: 'Alexandr',
-        lastName: 'Malyshev',
-        birthDate: new Date('1999-07-01'),
-      },
-      {
-        email: 'nihilist-bueno@gmail.com',
-        firstName: 'Svetlana',
-        lastName: 'Rudskaya',
-        birthDate: new Date('2001-02-12'),
-      },
-      {
-        email: 'not-another-email@gmail.com',
-        firstName: 'Elena',
-        lastName: 'Vinitskaya',
-        birthDate: new Date('2002-09-24'),
-      },
-    ],
-  });
-
-  console.log('Creating todo data...');
-  await prisma.todo.createMany({
-    data: [
-      {
-        title: 'Сходить за хлебом',
-        description: 'Хлеба дома нет :(',
-        deadline: new Date('2026-07-15'),
-      },
-      {
-        title: 'Сделать уборку',
-        description: 'Грязно как-то',
-        deadline: new Date('2026-07-15'),
-      },
-      {
-        title: 'Выучить React',
-        description: 'Для успешной карьеры в IT',
-        deadline: new Date('2026-10-01'),
-      },
-      {
-        title: 'Закончить практикум',
-        description: 'Ну что я, зря платил что-ли?',
-        deadline: new Date('2026-12-31'),
-      },
-      {
-        title: 'Покормить кота',
-        description: 'Голодный, холодный и орет постоянно',
-        deadline: new Date('2026-07-15'),
-      },
-    ],
-  });
-
-  console.log('Creating post data...');
-  await prisma.post.create({
-    data: {
-      title: 'On holiday!',
-      img: '/images/posts/post-1.jpg',
-    },
-  });
-
-  console.log('Creating product data...');
-  await prisma.product.create({
-    data: {
-      title: 'Фен',
-      description: 'Сушит волосы',
-      price: 10000,
-      img: '/images/products/product-1.jpg',
-    },
-  });
-
-  console.log(`✅ Data created`);
+  // console.log('🌱 Starting seeding...');
+  // console.log('Checking connection...');
+  // const isConnected = await testConnection();
+  // if (!isConnected) {
+  //   throw new Error('Not connected!');
+  // }
+  // console.log('🧹 Cleaning existing data...');
+  // await prisma.todo.deleteMany();
+  // await prisma.user.deleteMany();
+  // await prisma.product.deleteMany();
+  // await prisma.post.deleteMany();
+  // console.log('Creating user data...');
+  // await prisma.user.createMany({
+  //   data: [
+  //     {
+  //       email: 'my-email@mail.ru',
+  //       firstName: 'Vlad',
+  //       lastName: 'Saveliev',
+  //       birthDate: new Date('2004-05-16'),
+  //     },
+  //     {
+  //       email: 'some-cool-email@gmail.com',
+  //       firstName: 'Alexandr',
+  //       lastName: 'Malyshev',
+  //       birthDate: new Date('1999-07-01'),
+  //     },
+  //     {
+  //       email: 'nihilist-bueno@gmail.com',
+  //       firstName: 'Svetlana',
+  //       lastName: 'Rudskaya',
+  //       birthDate: new Date('2001-02-12'),
+  //     },
+  //     {
+  //       email: 'not-another-email@gmail.com',
+  //       firstName: 'Elena',
+  //       lastName: 'Vinitskaya',
+  //       birthDate: new Date('2002-09-24'),
+  //     },
+  //   ],
+  // });
+  // console.log('Creating todo data...');
+  // await prisma.todo.createMany({
+  //   data: [
+  //     {
+  //       title: 'Сходить за хлебом',
+  //       description: 'Хлеба дома нет :(',
+  //       deadline: new Date('2026-07-15'),
+  //     },
+  //     {
+  //       title: 'Сделать уборку',
+  //       description: 'Грязно как-то',
+  //       deadline: new Date('2026-07-15'),
+  //     },
+  //     {
+  //       title: 'Выучить React',
+  //       description: 'Для успешной карьеры в IT',
+  //       deadline: new Date('2026-10-01'),
+  //     },
+  //     {
+  //       title: 'Закончить практикум',
+  //       description: 'Ну что я, зря платил что-ли?',
+  //       deadline: new Date('2026-12-31'),
+  //     },
+  //     {
+  //       title: 'Покормить кота',
+  //       description: 'Голодный, холодный и орет постоянно',
+  //       deadline: new Date('2026-07-15'),
+  //     },
+  //   ],
+  // });
+  // console.log('Creating post data...');
+  // await prisma.post.create({
+  //   data: {
+  //     title: 'On holiday!',
+  //     img: '/images/posts/post-1.jpg',
+  //   },
+  // });
+  // console.log('Creating product data...');
+  // await prisma.product.create({
+  //   data: {
+  //     title: 'Фен',
+  //     description: 'Сушит волосы',
+  //     price: 10000,
+  //     img: '/images/products/product-1.jpg',
+  //   },
+  // });
+  // console.log(`✅ Data created`);
 }
 
 main()

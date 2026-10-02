@@ -13,30 +13,66 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String
-  firstName String
-  lastName  String
-  birthDate DateTime
+  id            Int                @id @default(autoincrement())
+  email         String
+  password      String
+  name          String
+  birth_date    DateTime
+  gender        Genders            @relation(fields: [gender_id], references: [id])
+  gender_id     Int
+  city          Cities             @relation(fields: [city_id], references: [id])
+  city_id       Int
+  creation_date DateTime
+  likes_count   Int
+  image_path    String
+  canTeach      UserCanTeach[]
+  wantsToLearn  UserWantsToLearn[]
 }
 
-model Product {
-  id          Int    @id @default(autoincrement())
-  title       String
-  description String
-  price       Int
-  img         String
+model UserCanTeach {
+  user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id     Int
+  subskill    Subskills @relation(fields: [subskill_id], references: [id], onDelete: Cascade)
+  subskill_id Int
+
+  @@id([user_id, subskill_id])
 }
 
-model Todo {
-  id          Int      @id @default(autoincrement())
-  title       String
-  description String
-  deadline    DateTime
+model UserWantsToLearn {
+  user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id     Int
+  subskill    Subskills @relation(fields: [subskill_id], references: [id], onDelete: Cascade)
+  subskill_id Int
+
+  @@id([user_id, subskill_id])
 }
 
-model Post {
+model Cities {
   id    Int    @id @default(autoincrement())
   title String
-  img   String
+  users User[]
+}
+
+model Genders {
+  id    Int    @id @default(autoincrement())
+  title String
+  users User[]
+}
+
+model Subskills {
+  id                Int                @id @default(autoincrement())
+  title             String
+  skill             Skills             @relation(fields: [skill_id], references: [id])
+  skill_id          Int
+  canTeachUsers     UserCanTeach[]
+  wantsToLearnUsers UserWantsToLearn[]
+}
+
+model Skills {
+  id        Int         @id @default(autoincrement())
+  title     String
+  img       String
+  subskills Subskills[]
+  icon      String
+  color     String
 }
