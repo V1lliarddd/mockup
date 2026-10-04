@@ -13,19 +13,20 @@ model User {
   password      String
   name          String
   birth_date    DateTime
-  gender        Genders            @relation(fields: [gender_id], references: [id])
+  gender        Genders            @relation(fields: [gender_id], references: [id], onDelete: Cascade)
   gender_id     Int
-  city          Cities             @relation(fields: [city_id], references: [id])
+  city          Cities             @relation(fields: [city_id], references: [id], onDelete: Cascade)
   city_id       Int
   creation_date DateTime           @default(now())
   likes_count   Int                @default(0)
   image_path    String
   canTeach      UserCanTeach[]
   wantsToLearn  UserWantsToLearn[]
-  refreshToken  String
+  refreshToken  String?
 }
 
 model UserCanTeach {
+  title       String
   user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id     Int
   subskill    Subskills @relation(fields: [subskill_id], references: [id], onDelete: Cascade)
@@ -35,6 +36,7 @@ model UserCanTeach {
 }
 
 model UserWantsToLearn {
+  title       String
   user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id     Int
   subskill    Subskills @relation(fields: [subskill_id], references: [id], onDelete: Cascade)
@@ -58,7 +60,7 @@ model Genders {
 model Subskills {
   id                Int                @id @default(autoincrement())
   title             String
-  skill             Skills             @relation(fields: [skill_id], references: [id])
+  skill             Skills             @relation(fields: [skill_id], references: [id], onDelete: Cascade)
   skill_id          Int
   canTeachUsers     UserCanTeach[]
   wantsToLearnUsers UserWantsToLearn[]
