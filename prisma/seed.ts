@@ -295,6 +295,66 @@ async function main() {
       },
     ],
   });
+  console.log('Creating subskills data...');
+  await prisma.user.createMany({
+    data: [
+      {
+        email: 'alexander@mail.ru',
+        password: '12345',
+        name: 'Александр',
+        image_path: 'avatar-1',
+        gender_id: 1,
+        birth_date: new Date('2002-07-10'),
+        city_id: 1,
+        likes_count: 0,
+        creation_date: new Date(),
+      },
+      {
+        email: 'elizaveta@mail.ru',
+        password: '12345',
+        name: 'Елизавета',
+        image_path: 'avatar-2',
+        gender_id: 2,
+        birth_date: new Date('2001-02-15'),
+        city_id: 5,
+        likes_count: 0,
+        creation_date: new Date(),
+      },
+      {
+        email: 'anastasya@mail.ru',
+        password: '12345',
+        name: 'Анастасия',
+        image_path: 'avatar-3',
+        gender_id: 2,
+        birth_date: new Date('2005-08-01'),
+        city_id: 3,
+        likes_count: 0,
+        creation_date: new Date(),
+      },
+      {
+        email: 'kirill@mail.ru',
+        password: '12345',
+        name: 'Кирилл',
+        image_path: 'avatar-4',
+        gender_id: 1,
+        birth_date: new Date('2000-05-12'),
+        city_id: 1,
+        likes_count: 0,
+        creation_date: new Date(),
+      },
+      {
+        email: 'alexander@mail.ru',
+        password: '12345',
+        name: 'Александр',
+        image_path: 'avatar-1',
+        gender_id: 1,
+        birth_date: new Date('2002-07-10'),
+        city_id: 1,
+        likes_count: 0,
+        creation_date: new Date(),
+      },
+    ],
+  });
 }
 
 main()
