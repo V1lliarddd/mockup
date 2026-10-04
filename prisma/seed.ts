@@ -20,46 +20,42 @@ async function testConnection() {
 }
 
 async function main() {
-  // console.log('🌱 Starting seeding...');
-  // console.log('Checking connection...');
-  // const isConnected = await testConnection();
-  // if (!isConnected) {
-  //   throw new Error('Not connected!');
-  // }
-  // console.log('🧹 Cleaning existing data...');
-  // await prisma.todo.deleteMany();
-  // await prisma.user.deleteMany();
-  // await prisma.product.deleteMany();
-  // await prisma.post.deleteMany();
-  // console.log('Creating user data...');
-  // await prisma.user.createMany({
-  //   data: [
-  //     {
-  //       email: 'my-email@mail.ru',
-  //       firstName: 'Vlad',
-  //       lastName: 'Saveliev',
-  //       birthDate: new Date('2004-05-16'),
-  //     },
-  //     {
-  //       email: 'some-cool-email@gmail.com',
-  //       firstName: 'Alexandr',
-  //       lastName: 'Malyshev',
-  //       birthDate: new Date('1999-07-01'),
-  //     },
-  //     {
-  //       email: 'nihilist-bueno@gmail.com',
-  //       firstName: 'Svetlana',
-  //       lastName: 'Rudskaya',
-  //       birthDate: new Date('2001-02-12'),
-  //     },
-  //     {
-  //       email: 'not-another-email@gmail.com',
-  //       firstName: 'Elena',
-  //       lastName: 'Vinitskaya',
-  //       birthDate: new Date('2002-09-24'),
-  //     },
-  //   ],
-  // });
+  console.log('Starting seeding...');
+  console.log('Checking connection...');
+  const isConnected = await testConnection();
+  if (!isConnected) {
+    throw new Error('Not connected!');
+  }
+  console.log('Cleaning existing data...');
+  await prisma.cities.deleteMany();
+  await prisma.genders.deleteMany();
+  await prisma.skills.deleteMany();
+  await prisma.subskills.deleteMany();
+  await prisma.user.deleteMany();
+  console.log('Creating user data...');
+  await prisma.cities.createMany({
+    data: [
+      {},
+      {
+        email: 'some-cool-email@gmail.com',
+        firstName: 'Alexandr',
+        lastName: 'Malyshev',
+        birthDate: new Date('1999-07-01'),
+      },
+      {
+        email: 'nihilist-bueno@gmail.com',
+        firstName: 'Svetlana',
+        lastName: 'Rudskaya',
+        birthDate: new Date('2001-02-12'),
+      },
+      {
+        email: 'not-another-email@gmail.com',
+        firstName: 'Elena',
+        lastName: 'Vinitskaya',
+        birthDate: new Date('2002-09-24'),
+      },
+    ],
+  });
   // console.log('Creating todo data...');
   // await prisma.todo.createMany({
   //   data: [
