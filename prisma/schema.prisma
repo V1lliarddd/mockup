@@ -66,8 +66,7 @@ model Subskills {
 model Skills {
   id        Int         @id @default(autoincrement())
   title     String
-  img       String
   subskills Subskills[]
-  icon      String
+  icon_src  String
   color     String
 }
