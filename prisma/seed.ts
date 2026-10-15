@@ -646,197 +646,253 @@ async function main() {
     ]
   });
   console.log('Creating user_wants_to_learn data...');
+  console.log('Creating user_wants_to_learn data...');
+  await prisma.userWantsToLearn.createMany({
+    data: [
+      { user_id: 1, subskill_id: 12 },
+      { user_id: 2, subskill_id: 23 },
+      { user_id: 3, subskill_id: 4 },
+      { user_id: 4, subskill_id: 23 },
+      { user_id: 5, subskill_id: 23 },
+      { user_id: 6, subskill_id: 7 },
+      { user_id: 7, subskill_id: 15 },
+      { user_id: 8, subskill_id: 18 },
+      { user_id: 9, subskill_id: 2 },
+      { user_id: 10, subskill_id: 21 },
+      { user_id: 11, subskill_id: 9 },
+      { user_id: 12, subskill_id: 14 },
+      { user_id: 13, subskill_id: 6 },
+      { user_id: 14, subskill_id: 11 },
+      { user_id: 15, subskill_id: 17 },
+      { user_id: 16, subskill_id: 22 },
+      { user_id: 17, subskill_id: 3 },
+      { user_id: 18, subskill_id: 20 },
+      { user_id: 19, subskill_id: 5 },
+      { user_id: 20, subskill_id: 13 }
+    ]
+  });
+  console.log('Creating user_can_teach data...');
   await prisma.userCanTeach.createMany({
     data: [
       {
         title: 'Игра на барабанах',
+        description:
+          'Учу играть любимые ритмы с нуля. Разберём грув, координацию и посадку.',
+        image_1: 'drums-1.jpg',
+        image_2: 'drums-2.jpg',
+        image_3: 'drums-3.jpg',
+        image_4: 'drums-4.jpg',
         user_id: 1,
         subskill_id: 12
       },
       {
         title: 'Английский язык',
+        description:
+          'Английский для путешествий и работы. Учим живые фразы, а не правила ради правил.',
+        image_1: 'english-1.jpg',
+        image_2: 'english-2.jpg',
+        image_3: 'english-3.jpg',
+        image_4: 'english-4.jpg',
         user_id: 2,
         subskill_id: 23
       },
       {
-        title: 'Бизнес план',
+        title: 'Бизнес-планирование',
+        description:
+          'Помогу превратить идею в рабочий бизнес-план. Разберём рынок, юнит-экономику и риски.',
+        image_1: 'business-1.jpg',
+        image_2: 'business-2.jpg',
+        image_3: 'business-3.jpg',
+        image_4: 'business-4.jpg',
         user_id: 3,
-        subskill_id: 4
+        subskill_id: 7
       },
       {
         title: 'Английский язык',
+        description:
+          'Английский с нуля или для повышения уровня. Много разговорной практики.',
+        image_1: 'english-1.jpg',
+        image_2: 'english-2.jpg',
+        image_3: 'english-3.jpg',
+        image_4: 'english-4.jpg',
         user_id: 4,
         subskill_id: 23
       },
       {
         title: 'Английский язык',
+        description:
+          'Подготовка к IELTS и TOEFL. Работаем над всеми секциями, тренируем тайминг.',
+        image_1: 'english-1.jpg',
+        image_2: 'english-2.jpg',
+        image_3: 'english-3.jpg',
+        image_4: 'english-4.jpg',
         user_id: 5,
-        subskill_id: 23
-      },
-      { title: 'Гитара', user_id: 6, subskill_id: 7 },
-      { title: 'Фотография', user_id: 7, subskill_id: 15 },
-      { title: 'Кулинария', user_id: 8, subskill_id: 18 },
-      { title: 'Программирование', user_id: 9, subskill_id: 2 },
-      { title: 'Испанский язык', user_id: 10, subskill_id: 21 },
-      { title: 'Шахматы', user_id: 11, subskill_id: 9 },
-      { title: 'Рисование', user_id: 12, subskill_id: 14 },
-      { title: 'Йога', user_id: 13, subskill_id: 6 },
-      { title: 'Вокал', user_id: 14, subskill_id: 11 },
-      { title: 'Монтаж видео', user_id: 15, subskill_id: 17 },
-      { title: 'Немецкий язык', user_id: 16, subskill_id: 22 },
-      { title: 'Веб-дизайн', user_id: 17, subskill_id: 3 },
-      { title: 'Плавание', user_id: 18, subskill_id: 20 },
-      { title: 'Маркетинг', user_id: 19, subskill_id: 5 },
-      { title: 'Каллиграфия', user_id: 20, subskill_id: 13 }
-    ]
-  });
-  console.log('Creating user_can_teach data...');
-  await prisma.userWantsToLearn.createMany({
-    data: [
-      {
-        title: 'Тайм менеджмент',
-        user_id: 1,
-        subskill_id: 6
+        subskill_id: 29
       },
       {
-        title: 'Медитация',
-        user_id: 1,
+        title: 'Гитара',
+        description:
+          'Учу играть на гитаре с нуля. Аккорды, бой, первые песни — уже через месяц.',
+        image_1: 'guitar-1.jpg',
+        image_2: 'guitar-2.jpg',
+        image_3: 'guitar-3.jpg',
+        image_4: 'guitar-4.jpg',
+        user_id: 6,
+        subskill_id: 12
+      },
+      {
+        title: 'Фотография',
+        description:
+          'Помогу освоить камеру и композицию. Разберём свет, кадр и обработку.',
+        image_1: 'photo-1.jpg',
+        image_2: 'photo-2.jpg',
+        image_3: 'photo-3.jpg',
+        image_4: 'photo-4.jpg',
+        user_id: 7,
+        subskill_id: 10
+      },
+      {
+        title: 'Кулинария',
+        description:
+          'Готовлю просто и вкусно. Научу базовым техникам и покажу, что готовить — это легко.',
+        image_1: 'cooking-1.jpg',
+        image_2: 'cooking-2.jpg',
+        image_3: 'cooking-3.jpg',
+        image_4: 'cooking-4.jpg',
+        user_id: 8,
+        subskill_id: 39
+      },
+      {
+        title: 'Программирование',
+        description:
+          'Учу программировать с нуля. Основы, практика, реальные проекты.',
+        image_1: 'programming-1.jpg',
+        image_2: 'programming-2.jpg',
+        image_3: 'programming-3.jpg',
+        image_4: 'programming-4.jpg',
+        user_id: 9,
+        subskill_id: 19
+      },
+      {
+        title: 'Испанский язык',
+        description:
+          'Испанский с носителем языка. Учим не по учебникам, а по жизни.',
+        image_1: 'spanish-1.jpg',
+        image_2: 'spanish-2.jpg',
+        image_3: 'spanish-3.jpg',
+        image_4: 'spanish-4.jpg',
+        user_id: 10,
+        subskill_id: 25
+      },
+      {
+        title: 'Шахматы',
+        description:
+          'От новичка до уверенного игрока. Тактика, стратегия, разбор партий.',
+        image_1: 'chess-1.jpg',
+        image_2: 'chess-2.jpg',
+        image_3: 'chess-3.jpg',
+        image_4: 'chess-4.jpg',
+        user_id: 11,
+        subskill_id: 19
+      },
+      {
+        title: 'Рисование',
+        description:
+          'Учу рисовать с нуля. Скетчи, портреты, скетчбук как привычка.',
+        image_1: 'drawing-1.jpg',
+        image_2: 'drawing-2.jpg',
+        image_3: 'drawing-3.jpg',
+        image_4: 'drawing-4.jpg',
+        user_id: 12,
+        subskill_id: 9
+      },
+      {
+        title: 'Йога',
+        description:
+          'Йога для тела и головы. Мягкий подход, дыхание, гибкость.',
+        image_1: 'yoga-1.jpg',
+        image_2: 'yoga-2.jpg',
+        image_3: 'yoga-3.jpg',
+        image_4: 'yoga-4.jpg',
+        user_id: 13,
         subskill_id: 30
       },
       {
-        title: 'Французский язык',
-        user_id: 1,
-        subskill_id: 24
+        title: 'Вокал',
+        description:
+          'Ставлю голос и учу петь без стеснения. Дыхание, распевки, любимые песни.',
+        image_1: 'vocal-1.jpg',
+        image_2: 'vocal-2.jpg',
+        image_3: 'vocal-3.jpg',
+        image_4: 'vocal-4.jpg',
+        user_id: 14,
+        subskill_id: 12
       },
       {
-        title: 'Китайский язык',
-        user_id: 1,
-        subskill_id: 27
+        title: 'Монтаж видео',
+        description:
+          'Учу монтировать в Premiere Pro и DaVinci. От новичка до первого проекта.',
+        image_1: 'video-1.jpg',
+        image_2: 'video-2.jpg',
+        image_3: 'video-3.jpg',
+        image_4: 'video-4.jpg',
+        user_id: 15,
+        subskill_id: 11
       },
       {
-        title: 'Тайм менеджмент',
-        user_id: 2,
-        subskill_id: 6
+        title: 'Немецкий язык',
+        description: 'Немецкий для работы и жизни в Германии. Уровни A1–B2.',
+        image_1: 'german-1.jpg',
+        image_2: 'german-2.jpg',
+        image_3: 'german-3.jpg',
+        image_4: 'german-4.jpg',
+        user_id: 16,
+        subskill_id: 26
       },
       {
-        title: 'Медитация',
-        user_id: 2,
-        subskill_id: 30
+        title: 'Веб-дизайн',
+        description:
+          'Учу проектировать сайты и интерфейсы. Figma, UX-основы, портфолио.',
+        image_1: 'webdesign-1.jpg',
+        image_2: 'webdesign-2.jpg',
+        image_3: 'webdesign-3.jpg',
+        image_4: 'webdesign-4.jpg',
+        user_id: 17,
+        subskill_id: 16
       },
       {
-        title: 'Французский язык',
-        user_id: 2,
-        subskill_id: 24
+        title: 'Плавание',
+        description:
+          'Учу плавать взрослых с нуля. Кроль, брасс, дыхание, страхи воды.',
+        image_1: 'swimming-1.jpg',
+        image_2: 'swimming-2.jpg',
+        image_3: 'swimming-3.jpg',
+        image_4: 'swimming-4.jpg',
+        user_id: 18,
+        subskill_id: 34
       },
       {
-        title: 'Китайский язык',
-        user_id: 2,
-        subskill_id: 27
+        title: 'Маркетинг',
+        description:
+          'Маркетинг с нуля до первых клиентов. Стратегия, каналы, аналитика.',
+        image_1: 'marketing-1.jpg',
+        image_2: 'marketing-2.jpg',
+        image_3: 'marketing-3.jpg',
+        image_4: 'marketing-4.jpg',
+        user_id: 19,
+        subskill_id: 2
       },
       {
-        title: 'Тайм менеджмент',
-        user_id: 3,
-        subskill_id: 6
-      },
-      {
-        title: 'Медитация',
-        user_id: 3,
-        subskill_id: 30
-      },
-      {
-        title: 'Французский язык',
-        user_id: 3,
-        subskill_id: 24
-      },
-      {
-        title: 'Китайский язык',
-        user_id: 3,
-        subskill_id: 27
-      },
-      {
-        title: 'Тайм менеджмент',
-        user_id: 4,
-        subskill_id: 6
-      },
-      {
-        title: 'Медитация',
-        user_id: 4,
-        subskill_id: 30
-      },
-      {
-        title: 'Французский язык',
-        user_id: 4,
-        subskill_id: 24
-      },
-      {
-        title: 'Китайский язык',
-        user_id: 4,
-        subskill_id: 27
-      },
-      {
-        title: 'Тайм менеджмент',
-        user_id: 5,
-        subskill_id: 6
-      },
-      {
-        title: 'Медитация',
-        user_id: 5,
-        subskill_id: 30
-      },
-      {
-        title: 'Французский язык',
-        user_id: 5,
-        subskill_id: 24
-      },
-      {
-        title: 'Китайский язык',
-        user_id: 5,
-        subskill_id: 27
-      },
-      { title: 'Тайм менеджмент', user_id: 6, subskill_id: 6 },
-      { title: 'Французский язык', user_id: 6, subskill_id: 24 },
-
-      { title: 'Медитация', user_id: 7, subskill_id: 30 },
-      { title: 'Китайский язык', user_id: 7, subskill_id: 27 },
-
-      { title: 'Тайм менеджмент', user_id: 8, subskill_id: 6 },
-      { title: 'Китайский язык', user_id: 8, subskill_id: 27 },
-
-      { title: 'Французский язык', user_id: 9, subskill_id: 24 },
-      { title: 'Медитация', user_id: 9, subskill_id: 30 },
-
-      { title: 'Тайм менеджмент', user_id: 10, subskill_id: 6 },
-      { title: 'Медитация', user_id: 10, subskill_id: 30 },
-
-      { title: 'Китайский язык', user_id: 11, subskill_id: 27 },
-      { title: 'Французский язык', user_id: 11, subskill_id: 24 },
-
-      { title: 'Тайм менеджмент', user_id: 12, subskill_id: 6 },
-      { title: 'Французский язык', user_id: 12, subskill_id: 24 },
-
-      { title: 'Медитация', user_id: 13, subskill_id: 30 },
-      { title: 'Китайский язык', user_id: 13, subskill_id: 27 },
-
-      { title: 'Французский язык', user_id: 14, subskill_id: 24 },
-      { title: 'Тайм менеджмент', user_id: 14, subskill_id: 6 },
-
-      { title: 'Китайский язык', user_id: 15, subskill_id: 27 },
-      { title: 'Медитация', user_id: 15, subskill_id: 30 },
-
-      { title: 'Тайм менеджмент', user_id: 16, subskill_id: 6 },
-      { title: 'Китайский язык', user_id: 16, subskill_id: 27 },
-
-      { title: 'Медитация', user_id: 17, subskill_id: 30 },
-      { title: 'Французский язык', user_id: 17, subskill_id: 24 },
-
-      { title: 'Французский язык', user_id: 18, subskill_id: 24 },
-      { title: 'Тайм менеджмент', user_id: 18, subskill_id: 6 },
-
-      { title: 'Китайский язык', user_id: 19, subskill_id: 27 },
-      { title: 'Медитация', user_id: 19, subskill_id: 30 },
-
-      { title: 'Тайм менеджмент', user_id: 20, subskill_id: 6 },
-      { title: 'Французский язык', user_id: 20, subskill_id: 24 }
+        title: 'Каллиграфия',
+        description:
+          'Учу писать красиво. Основы, инструменты, ежедневная практика.',
+        image_1: 'calligraphy-1.jpg',
+        image_2: 'calligraphy-2.jpg',
+        image_3: 'calligraphy-3.jpg',
+        image_4: 'calligraphy-4.jpg',
+        user_id: 20,
+        subskill_id: 16
+      }
     ]
   });
 }

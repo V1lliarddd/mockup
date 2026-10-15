@@ -8,26 +8,52 @@ datasource db {
 }
 
 model User {
-  id            Int                @id @default(autoincrement())
-  bio           String             @default("")
-  email         String             @unique
+  id            Int      @id @default(autoincrement())
+  bio           String   @default("")
+  email         String   @unique
   password      String
   name          String
   birth_date    DateTime
-  gender        Genders            @relation(fields: [gender_id], references: [id], onDelete: Cascade)
+  gender        Genders  @relation(fields: [gender_id], references: [id], onDelete: Restrict)
   gender_id     Int
-  city          Cities             @relation(fields: [city_id], references: [id], onDelete: Cascade)
+  city          Cities   @relation(fields: [city_id], references: [id], onDelete: Restrict)
   city_id       Int
-  creation_date DateTime           @default(now())
-  likes_count   Int                @default(0)
-  image_path    String
-  canTeach      UserCanTeach[]
-  wantsToLearn  UserWantsToLearn[]
+  creation_date DateTime @default(now())
+  likes_count   Int      @default(0)
+  image_path    String?
   refreshToken  String?
+
+  canTeach     UserCanTeach[]
+  wantsToLearn UserWantsToLearn[]
+
+  likesGiven    Like[] @relation("Liker")
+  likesReceived Like[] @relation("Liked")
+
+  sentExchanges     Exchange[] @relation("Initiator")
+  receivedExchanges Exchange[] @relation("Receiver")
 }
 
 model UserCanTeach {
+  id          Int    @id @default(autoincrement())
   title       String
+  description String @default("")
+
+  image_1 String?
+  image_2 String?
+  image_3 String?
+  image_4 String?
+
+  user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id     Int
+  subskill    Subskills @relation(fields: [subskill_id], references: [id], onDelete: Cascade)
+  subskill_id Int
+
+  createdAt DateTime @default(now())
+
+  @@unique([user_id, subskill_id])
+}
+
+model UserWantsToLearn {
   user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   user_id     Int
   subskill    Subskills @relation(fields: [subskill_id], references: [id], onDelete: Cascade)
@@ -36,14 +62,35 @@ model UserCanTeach {
   @@id([user_id, subskill_id])
 }
 
-model UserWantsToLearn {
-  title       String
-  user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
-  user_id     Int
-  subskill    Subskills @relation(fields: [subskill_id], references: [id], onDelete: Cascade)
-  subskill_id Int
+enum ExchangeStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
 
-  @@id([user_id, subskill_id])
+model Exchange {
+  id     Int            @id @default(autoincrement())
+  status ExchangeStatus @default(PENDING)
+
+  initiator    User @relation("Initiator", fields: [initiator_id], references: [id], onDelete: Cascade)
+  initiator_id Int
+
+  receiver    User @relation("Receiver", fields: [receiver_id], references: [id], onDelete: Cascade)
+  receiver_id Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Like {
+  id        Int      @id @default(autoincrement())
+  liker     User     @relation("Liker", fields: [liker_id], references: [id], onDelete: Cascade)
+  liker_id  Int
+  liked     User     @relation("Liked", fields: [liked_id], references: [id], onDelete: Cascade)
+  liked_id  Int
+  createdAt DateTime @default(now())
+
+  @@unique([liker_id, liked_id])
 }
 
 model Cities {
