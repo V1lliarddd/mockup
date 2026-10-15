@@ -6,9 +6,7 @@ class RecommendationService {
       where: {
         canTeach: {
           some: {
-            subskill: {
-              skill_id: skillId
-            }
+            subskill: { skill_id: skillId }
           }
         }
       },
@@ -17,18 +15,14 @@ class RecommendationService {
         name: true,
         image_path: true,
         birth_date: true,
-        city: {
-          select: { id: true, title: true }
-        },
+        city: { select: { id: true, title: true } },
         canTeach: {
           select: {
             title: true,
             subskill: {
               select: {
-                id: true,
-                title: true,
                 skill: {
-                  select: { id: true, title: true, color: true }
+                  select: { color: true }
                 }
               }
             }
@@ -38,10 +32,9 @@ class RecommendationService {
           select: {
             subskill: {
               select: {
-                id: true,
                 title: true,
                 skill: {
-                  select: { id: true, title: true, color: true }
+                  select: { color: true }
                 }
               }
             }
@@ -49,7 +42,6 @@ class RecommendationService {
         }
       }
     });
-
     function calculateAge(birthDate: Date): number {
       const today = new Date();
       let age = today.getFullYear() - birthDate.getFullYear();
@@ -60,10 +52,21 @@ class RecommendationService {
       return age;
     }
 
-    return users.map(({ birth_date, ...user }) => ({
-      ...user,
-      age: calculateAge(birth_date)
-    }));
+    return users.map(
+      ({ birth_date, city, canTeach, wantsToLearn, ...user }) => ({
+        ...user,
+        city: city.title,
+        age: calculateAge(birth_date),
+        canTeach: canTeach.map((item) => ({
+          title: item.title,
+          color: item.subskill.skill.color
+        })),
+        wantsToLearn: wantsToLearn.map((item) => ({
+          title: item.subskill.title,
+          color: item.subskill.skill.color
+        }))
+      })
+    );
   }
 }
 
