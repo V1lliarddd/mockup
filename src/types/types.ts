@@ -6,11 +6,24 @@ export interface ITodo {
 }
 
 export interface IUser {
-  id: number;
+  name: string;
   email: string;
-  firstName: string;
-  lastName: string;
-  birthDate: Date;
+  password: string;
+  date_birth: Date;
+  gender_id: number;
+  city_id: number;
+  bio: string;
+  image_path: string;
+  wantsToLearnSubskillId: string;
+  wantsToLearnSkillId: string;
+  skillTitle: string;
+  skillDescription: string;
+  canTeachSkillId: string;
+  canTeachSubskillId: string;
+  image_1: string;
+  image_2: string;
+  image_3: string;
+  image_4: string;
 }
 
 export interface IProduct {

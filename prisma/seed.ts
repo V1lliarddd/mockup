@@ -92,15 +92,11 @@ async function main() {
     data: [
       {
         id: 1,
-        title: 'male'
+        title: 'Мужчина'
       },
       {
         id: 2,
-        title: 'female'
-      },
-      {
-        id: 3,
-        title: 'irrelevant'
+        title: 'Женщина'
       }
     ]
   });
@@ -895,6 +891,22 @@ async function main() {
       }
     ]
   });
+
+  await resetSequences();
+}
+
+async function resetSequences() {
+  const tables = ['User', 'Skills', 'Subskills', 'Cities', 'Genders'];
+
+  for (const table of tables) {
+    await prisma.$executeRawUnsafe(
+      `SELECT setval(
+        pg_get_serial_sequence('"${table}"', 'id'),
+        COALESCE((SELECT MAX(id) FROM "${table}"), 1)
+      );`
+    );
+    console.log('Sequence reset');
+  }
 }
 
 main()
