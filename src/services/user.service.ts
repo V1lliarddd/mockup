@@ -143,6 +143,39 @@ class UserService {
     return age;
   };
 
+  async authUser({ email, password }: Pick<IUser, 'email' | 'password'>) {
+    const user = await prisma.user.findUnique({
+      where: { email, password }
+    });
+
+    if (!user) {
+      throw new Error('Неверный email или пароль');
+    }
+    console.log(user);
+    const accessToken = jwt.sign({ sub: user.id }, process.env.JWT_SECRET!, {
+      expiresIn: '15m'
+    });
+
+    const refreshToken = crypto.randomBytes(64).toString('hex');
+    const refreshTokenHash = crypto
+      .createHash('sha256')
+      .update(refreshToken)
+      .digest('hex');
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { refreshToken: refreshTokenHash }
+    });
+
+    const { password: _, refreshToken: __, ...safeUser } = user;
+
+    return {
+      user: safeUser,
+      accessToken,
+      refreshToken
+    };
+  }
+
   async createUser(data: IUser) {
     const refreshToken = crypto.randomBytes(64).toString('hex');
     const refreshTokenHash = crypto

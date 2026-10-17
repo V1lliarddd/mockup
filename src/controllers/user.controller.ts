@@ -32,6 +32,25 @@ class UserController {
     }
   }
 
+  async authUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { email, password } = req.body;
+      const user = await userService.authUser({ email, password });
+
+      res.cookie('refreshToken', user.refreshToken, {
+        httpOnly: true,
+        maxAge: 30 * 24 * 60 * 60 * 1000
+      });
+
+      res.status(201).json({
+        user: user.user,
+        accessToken: user.accessToken
+      });
+    } catch (e) {
+      next(e);
+    }
+  }
+
   async createUser(req: Request, res: Response, next: NextFunction) {
     try {
       const files = req.files as
