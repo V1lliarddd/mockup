@@ -1,7 +1,8 @@
-import { prisma } from '../../prisma/prisma.ts';
-import { IUser } from '../types/types.ts';
-import crypto from 'node:crypto';
-import jwt from 'jsonwebtoken';
+import { prisma } from "../../prisma/prisma.ts";
+import { IUser } from "../types/types.ts";
+import crypto from "node:crypto";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 class UserService {
   async getAllUsers() {
@@ -14,7 +15,7 @@ class UserService {
         creation_date: true,
         birth_date: true,
         city: {
-          select: { id: true, title: true }
+          select: { id: true, title: true },
         },
         canTeach: {
           select: {
@@ -34,12 +35,12 @@ class UserService {
                     id: true,
                     title: true,
                     color: true,
-                    icon_src: true
-                  }
-                }
-              }
-            }
-          }
+                    icon_src: true,
+                  },
+                },
+              },
+            },
+          },
         },
         wantsToLearn: {
           select: {
@@ -52,19 +53,19 @@ class UserService {
                     id: true,
                     title: true,
                     color: true,
-                    icon_src: true
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+                    icon_src: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     });
 
     return users.map(({ birth_date, ...user }) => ({
       ...user,
-      age: this.calculateAge(birth_date)
+      age: this.calculateAge(birth_date),
     }));
   }
 
@@ -78,7 +79,7 @@ class UserService {
         bio: true,
         birth_date: true,
         city: {
-          select: { id: true, title: true }
+          select: { id: true, title: true },
         },
         canTeach: {
           select: {
@@ -97,12 +98,12 @@ class UserService {
                   select: {
                     id: true,
                     title: true,
-                    color: true
-                  }
-                }
-              }
-            }
-          }
+                    color: true,
+                  },
+                },
+              },
+            },
+          },
         },
         wantsToLearn: {
           select: {
@@ -114,14 +115,14 @@ class UserService {
                   select: {
                     id: true,
                     title: true,
-                    color: true
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
+                    color: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     });
 
     if (!user) return null;
@@ -129,7 +130,7 @@ class UserService {
     return {
       ...user,
       age: this.calculateAge(user.birth_date),
-      birth_date: undefined
+      birth_date: undefined,
     };
   }
 
@@ -143,28 +144,35 @@ class UserService {
     return age;
   };
 
-  async authUser({ email, password }: Pick<IUser, 'email' | 'password'>) {
+  async authUser({ email, password }: Pick<IUser, "email" | "password">) {
     const user = await prisma.user.findUnique({
-      where: { email, password }
+      where: { email },
     });
 
     if (!user) {
-      throw new Error('Неверный email или пароль');
+      throw new Error("Неверный email или пароль");
     }
     console.log(user);
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      throw new Error("Неверный email или пароль");
+    }
+    
     const accessToken = jwt.sign({ sub: user.id }, process.env.JWT_SECRET!, {
-      expiresIn: '15m'
+      expiresIn: "15m",
     });
 
-    const refreshToken = crypto.randomBytes(64).toString('hex');
+    const refreshToken = crypto.randomBytes(64).toString("hex");
     const refreshTokenHash = crypto
-      .createHash('sha256')
+      .createHash("sha256")
       .update(refreshToken)
-      .digest('hex');
+      .digest("hex");
 
     await prisma.user.update({
       where: { id: user.id },
-      data: { refreshToken: refreshTokenHash }
+      data: { refreshToken: refreshTokenHash },
     });
 
     const { password: _, refreshToken: __, ...safeUser } = user;
@@ -172,16 +180,16 @@ class UserService {
     return {
       user: safeUser,
       accessToken,
-      refreshToken
+      refreshToken,
     };
   }
 
   async createUser(data: IUser) {
-    const refreshToken = crypto.randomBytes(64).toString('hex');
+    const refreshToken = crypto.randomBytes(64).toString("hex");
     const refreshTokenHash = crypto
-      .createHash('sha256')
+      .createHash("sha256")
       .update(refreshToken)
-      .digest('hex');
+      .digest("hex");
     console.log(data);
     const user = await prisma.$transaction(async (tx) => {
       const createdUser = await tx.user.create({
@@ -194,8 +202,8 @@ class UserService {
           city_id: data.city_id,
           gender_id: data.gender_id,
           image_path: data.image_path,
-          refreshToken: refreshTokenHash
-        }
+          refreshToken: refreshTokenHash,
+        },
       });
 
       await tx.userCanTeach.create({
@@ -207,15 +215,15 @@ class UserService {
           image_3: data.image_3,
           image_4: data.image_4,
           subskill_id: Number(data.canTeachSkillId),
-          user_id: createdUser.id
-        }
+          user_id: createdUser.id,
+        },
       });
 
       await tx.userWantsToLearn.create({
         data: {
           subskill_id: Number(data.wantsToLearnSubskillId),
-          user_id: createdUser.id
-        }
+          user_id: createdUser.id,
+        },
       });
 
       return tx.user.findUnique({
@@ -230,26 +238,26 @@ class UserService {
           creation_date: true,
           likes_count: true,
           city: { select: { id: true, title: true } },
-          gender: { select: { id: true, title: true } }
-        }
+          gender: { select: { id: true, title: true } },
+        },
       });
     });
     const accessToken = jwt.sign({ sub: user!.id }, process.env.JWT_SECRET!, {
-      expiresIn: '15m'
+      expiresIn: "15m",
     });
 
     return {
       user,
       accessToken,
-      refreshToken
+      refreshToken,
     };
   }
 
   async deleteUser(id: string) {
     return await prisma.user.delete({
       where: {
-        id: parseInt(id)
-      }
+        id: parseInt(id),
+      },
     });
   }
 
