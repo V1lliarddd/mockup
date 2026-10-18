@@ -1,6 +1,6 @@
-import { Request, Response, NextFunction } from "express";
-import { userService } from "../services/user.service";
-import bcrypt from "bcrypt";
+import { Request, Response, NextFunction } from 'express';
+import { userService } from '../services/user.service';
+import bcrypt from 'bcrypt';
 
 class UserController {
   async getUsers(req: Request, res: Response, next: NextFunction) {
@@ -14,7 +14,7 @@ class UserController {
         .sort((a, b) => b.creation_date.getTime() - a.creation_date.getTime())
         .slice(0, 9);
       const byName = [...users].sort((a, b) =>
-        a.name.localeCompare(b.name, "ru"),
+        a.name.localeCompare(b.name, 'ru')
       );
       res.json({ topByLikes, newest, byName });
     } catch (e) {
@@ -38,14 +38,14 @@ class UserController {
       const { email, password } = req.body;
       const user = await userService.authUser({ email, password });
 
-      res.cookie("refreshToken", user.refreshToken, {
+      res.cookie('refreshToken', user.refreshToken, {
         httpOnly: true,
-        maxAge: 30 * 24 * 60 * 60 * 1000,
+        maxAge: 30 * 24 * 60 * 60 * 1000
       });
 
       res.status(201).json({
         user: user.user,
-        accessToken: user.accessToken,
+        accessToken: user.accessToken
       });
     } catch (e) {
       next(e);
@@ -66,7 +66,7 @@ class UserController {
         name: req.body.name,
         email: req.body.email,
         password: hashedPassword,
-        bio: req.body.bio ?? "",
+        bio: req.body.bio ?? '',
         date_birth: new Date(req.body.date_birth),
         city_id: Number(req.body.city_id),
         gender_id: Number(req.body.gender_id),
@@ -80,17 +80,17 @@ class UserController {
         skillTitle: req.body.skillTitle,
         wantsToLearnSkillId: req.body.wantsToLearnSkillId,
         wantsToLearnSubskillId: req.body.wantsToLearnSubskillId,
-        skillDescription: req.body.skillDescription,
+        skillDescription: req.body.skillDescription
       });
 
-      res.cookie("refreshToken", user.refreshToken, {
+      res.cookie('refreshToken', user.refreshToken, {
         httpOnly: true,
-        maxAge: 30 * 24 * 60 * 60 * 1000,
+        maxAge: 30 * 24 * 60 * 60 * 1000
       });
 
       res.status(201).json({
         user: user.user,
-        accessToken: user.accessToken,
+        accessToken: user.accessToken
       });
     } catch (e) {
       next(e);
