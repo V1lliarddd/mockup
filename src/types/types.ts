@@ -26,6 +26,18 @@ export interface IUser {
   image_4: string;
 }
 
+export interface IUpdateUser {
+  user_id: string;
+  bio?: string;
+  date_birth?: Date;
+  city?: string;
+  email?: string;
+  password?: string;
+  gender?: string;
+  name?: string;
+  image_path?: string;
+}
+
 export interface IProduct {
   id: number;
   title: string;

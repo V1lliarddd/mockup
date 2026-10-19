@@ -1,8 +1,10 @@
 import { prisma } from '../../prisma/prisma.ts';
-import { IUser } from '../types/types.ts';
+import { IUpdateUser, IUser } from '../types/types.ts';
 import crypto from 'node:crypto';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
+import path from 'node:path';
+import fs from 'node:fs/promises';
 
 class UserService {
   async getAllUsers(id = '') {
@@ -266,20 +268,94 @@ class UserService {
     };
   }
 
-  async deleteUser(id: string) {
-    return await prisma.user.delete({
-      where: {
-        id: parseInt(id)
+  async updateUser(data: IUpdateUser) {
+    const existing = await prisma.user.findUnique({
+      where: { id: Number(data.user_id) },
+      select: { id: true, image_path: true }
+    });
+
+    if (!existing) {
+      throw new Error('Пользователь не найден');
+    }
+
+    if (
+      data.image_path &&
+      existing.image_path &&
+      data.image_path !== existing.image_path
+    ) {
+      const oldPath = path.join('./images/users', existing.image_path);
+      await fs.unlink(oldPath).catch(() => {});
+    }
+
+    let cityId: number | undefined;
+    if (data.city !== undefined) {
+      const city = await prisma.cities.findFirst({
+        where: { title: data.city },
+        select: { id: true }
+      });
+      if (!city) throw new Error('Город не найден');
+      cityId = city.id;
+    }
+
+    let genderId: number | undefined;
+    if (data.gender !== undefined) {
+      const gender = await prisma.genders.findFirst({
+        where: { title: data.gender },
+        select: { id: true }
+      });
+      if (!gender) throw new Error('Пол не найден');
+      genderId = gender.id;
+    }
+    const updated = await prisma.user.update({
+      where: { id: Number(data.user_id) },
+      data: {
+        ...(data.email !== undefined &&
+          data.email !== '' && { email: data.email }),
+        ...(data.name !== undefined && { name: data.name }),
+        ...(data.bio !== undefined && { bio: data.bio }),
+        ...(data.date_birth !== undefined && {
+          birth_date: new Date(data.date_birth)
+        }),
+        ...(cityId !== undefined && { city_id: cityId }),
+        ...(genderId !== undefined && { gender_id: genderId }),
+        ...(data.password !== undefined &&
+          data.password !== '' && { password: data.password }),
+        ...(data.image_path !== undefined && { image_path: data.image_path })
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        image_path: true,
+        bio: true,
+        birth_date: true,
+        creation_date: true,
+        likes_count: true,
+        city: { select: { id: true } },
+        gender: { select: { id: true } }
       }
     });
-  }
 
-  // async updateUser(id: string, data: IUser) {
-  //   return await prisma.todo.update({
-  //     where: { id: parseInt(id) },
-  //     data
-  //   });
-  // }
+    const { city, gender, ...rest } = updated;
+
+    const accessToken = jwt.sign(
+      { sub: Number(data.user_id) },
+      process.env.JWT_SECRET!,
+      {
+        expiresIn: '15m'
+      }
+    );
+
+    return {
+      accessToken,
+      user: {
+        ...rest,
+
+        gender_id: gender.id,
+        city_id: city.id
+      }
+    };
+  }
 }
 
 export const userService = new UserService();

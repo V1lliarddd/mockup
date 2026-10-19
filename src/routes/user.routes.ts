@@ -15,7 +15,6 @@ router.post(
   userController.createUser
 );
 router.post('/auth/', upload.none(), userController.authUser);
-// router.put('/:id', userController.updateUser);
-router.delete('/:id', userController.deleteUser);
+router.post('/update', upload.none(), userController.updateUser);
 
 export default router;

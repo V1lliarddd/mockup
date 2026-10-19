@@ -98,12 +98,11 @@ class UserController {
     }
   }
 
-  async deleteUser(req: Request, res: Response, next: NextFunction) {
+  async updateUser(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params;
-      if (Array.isArray(id)) return;
-      await userService.deleteUser(id);
-      res.status(204).send();
+      const user = await userService.updateUser(req.body);
+      console.log(user);
+      res.status(201).json(user);
     } catch (e) {
       next(e);
     }
