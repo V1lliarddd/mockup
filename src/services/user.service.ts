@@ -2,6 +2,7 @@ import { prisma } from '../../prisma/prisma.ts';
 import { IUser } from '../types/types.ts';
 import crypto from 'node:crypto';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 class UserService {
   async getAllUsers() {
@@ -145,13 +146,20 @@ class UserService {
 
   async authUser({ email, password }: Pick<IUser, 'email' | 'password'>) {
     const user = await prisma.user.findUnique({
-      where: { email, password }
+      where: { email }
     });
 
     if (!user) {
       throw new Error('Неверный email или пароль');
     }
     console.log(user);
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordValid) {
+      throw new Error('Неверный email или пароль');
+    }
+
     const accessToken = jwt.sign({ sub: user.id }, process.env.JWT_SECRET!, {
       expiresIn: '15m'
     });
