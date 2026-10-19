@@ -182,7 +182,6 @@ class UserService {
       .createHash('sha256')
       .update(refreshToken)
       .digest('hex');
-    console.log(data);
     const user = await prisma.$transaction(async (tx) => {
       const createdUser = await tx.user.create({
         data: {

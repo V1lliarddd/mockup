@@ -4,6 +4,7 @@ import skillRoutes from './skill.routes';
 import cityRoutes from './city.routes';
 import genderRoutes from './gender.routes';
 import recommendationRoutes from './recommendations.routes';
+import favoriteRoutes from './favorite.routes';
 
 const router = express.Router();
 
@@ -12,5 +13,6 @@ router.use('/skills', skillRoutes);
 router.use('/cities', cityRoutes);
 router.use('/genders', genderRoutes);
 router.use('/recommendations', recommendationRoutes);
+router.use('/favorites', favoriteRoutes);
 
 export default router;
