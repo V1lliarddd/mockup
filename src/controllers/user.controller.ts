@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { userService } from '../services/user.service';
+import bcrypt from 'bcrypt';
 
 class UserController {
   async getUsers(req: Request, res: Response, next: NextFunction) {
@@ -60,10 +61,11 @@ class UserController {
       const avatar = files?.avatar?.[0]?.filename ?? null;
       const skillImages = files?.images?.map((f) => f.filename) ?? [];
       console.log(req.body);
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
       const user = await userService.createUser({
         name: req.body.name,
         email: req.body.email,
-        password: req.body.password,
+        password: hashedPassword,
         bio: req.body.bio ?? '',
         date_birth: new Date(req.body.date_birth),
         city_id: Number(req.body.city_id),
