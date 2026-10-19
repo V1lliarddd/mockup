@@ -18,6 +18,9 @@ class UserService {
         city: {
           select: { id: true, title: true }
         },
+        gender: {
+          select: { id: true, title: true }
+        },
         canTeach: {
           select: {
             id: true,
