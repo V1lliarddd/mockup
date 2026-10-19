@@ -86,8 +86,6 @@ class FavoriteService {
       orderBy: { createdAt: 'desc' }
     });
 
-    console.log(likes);
-
     return likes.map(({ liked, createdAt }) => ({
       ...liked,
       age: calculateAge(liked.birth_date),

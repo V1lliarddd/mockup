@@ -5,7 +5,8 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 class UserService {
-  async getAllUsers() {
+  async getAllUsers(id = '') {
+    const userId = id ? Number(id) : null;
     const users = await prisma.user.findMany({
       select: {
         id: true,
@@ -63,9 +64,20 @@ class UserService {
       }
     });
 
+    let likedSet = new Set<number>();
+    if (userId) {
+      const likes = await prisma.like.findMany({
+        where: { liker_id: userId },
+        select: { liked_id: true }
+      });
+
+      likedSet = new Set(likes.map((l) => l.liked_id));
+    }
+
     return users.map(({ birth_date, ...user }) => ({
       ...user,
-      age: this.calculateAge(birth_date)
+      age: this.calculateAge(birth_date),
+      isLiked: likedSet.has(user.id)
     }));
   }
 
@@ -152,7 +164,6 @@ class UserService {
     if (!user) {
       throw new Error('Неверный email или пароль');
     }
-    console.log(user);
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 

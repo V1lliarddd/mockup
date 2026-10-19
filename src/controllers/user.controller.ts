@@ -5,11 +5,13 @@ import bcrypt from 'bcrypt';
 class UserController {
   async getUsers(req: Request, res: Response, next: NextFunction) {
     try {
-      const users = await userService.getAllUsers();
+      const user_id = req.query.user_id ? req.query.user_id : '';
+      const users = await userService.getAllUsers(user_id as string);
       const topByLikes = users
         .slice()
         .sort((a, b) => b.likes_count - a.likes_count)
         .slice(0, 9);
+
       const newest = [...users]
         .sort((a, b) => b.creation_date.getTime() - a.creation_date.getTime())
         .slice(0, 9);
@@ -60,7 +62,6 @@ class UserController {
 
       const avatar = files?.avatar?.[0]?.filename ?? null;
       const skillImages = files?.images?.map((f) => f.filename) ?? [];
-      console.log(req.body);
       const hashedPassword = await bcrypt.hash(req.body.password, 10);
       const user = await userService.createUser({
         name: req.body.name,
