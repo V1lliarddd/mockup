@@ -10,6 +10,12 @@ class UserService {
   async getAllUsers(id = '') {
     const userId = id ? Number(id) : null;
     const users = await prisma.user.findMany({
+      where:
+        userId !== null
+          ? {
+              id: { not: userId }
+            }
+          : undefined,
       select: {
         id: true,
         name: true,
@@ -191,12 +197,29 @@ class UserService {
       data: { refreshToken: refreshTokenHash }
     });
 
+    const exchanges = await prisma.exchange.findMany({
+      where: { initiator_id: user.id },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        status: true,
+        createdAt: true,
+        initiator: {
+          select: { id: true, name: true }
+        },
+        receiver: {
+          select: { id: true, name: true }
+        }
+      }
+    });
+
     const { password: _, refreshToken: __, ...safeUser } = user;
 
     return {
       user: safeUser,
       accessToken,
-      refreshToken
+      refreshToken,
+      exchanges
     };
   }
 

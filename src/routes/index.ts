@@ -5,6 +5,7 @@ import cityRoutes from './city.routes';
 import genderRoutes from './gender.routes';
 import recommendationRoutes from './recommendations.routes';
 import favoriteRoutes from './favorite.routes';
+import exchangeRoutes from './exchange.routes';
 
 const router = express.Router();
 
@@ -14,5 +15,6 @@ router.use('/cities', cityRoutes);
 router.use('/genders', genderRoutes);
 router.use('/recommendations', recommendationRoutes);
 router.use('/favorites', favoriteRoutes);
+router.use('/exchange', exchangeRoutes);
 
 export default router;

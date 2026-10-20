@@ -28,6 +28,7 @@ class FavoriteController {
     try {
       const user_id = Number(req.params.userId);
       const data = await favoriteService.getFavorites(user_id);
+
       res.json(data);
     } catch (e) {
       next(e);

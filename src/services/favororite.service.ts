@@ -51,6 +51,7 @@ class FavoriteService {
             birth_date: true,
             likes_count: true,
             city: { select: { id: true, title: true } },
+            gender: { select: { id: true, title: true } },
             canTeach: {
               select: {
                 id: true,

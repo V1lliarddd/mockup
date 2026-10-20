@@ -47,7 +47,8 @@ class UserController {
 
       res.status(201).json({
         user: user.user,
-        accessToken: user.accessToken
+        accessToken: user.accessToken,
+        exchanges: user.exchanges
       });
     } catch (e) {
       next(e);
