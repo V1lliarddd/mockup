@@ -80,6 +80,8 @@ model Exchange {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([initiator_id, receiver_id])
 }
 
 model Like {

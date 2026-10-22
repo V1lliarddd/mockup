@@ -5,11 +5,20 @@ class ExchangeController {
   async sendExchange(req: Request, res: Response, next: NextFunction) {
     try {
       const { initiator_id, receiver_id } = req.body;
-      console.log(initiator_id);
       const data = await exchangeService.sendExchange(
         Number(initiator_id),
         Number(receiver_id)
       );
+      res.json(data).status(201);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  async fetchExchanges(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { user_id } = req.params;
+      const data = await exchangeService.fetchExchanges(Number(user_id));
       res.json(data);
     } catch (e) {
       next(e);

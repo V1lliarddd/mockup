@@ -28,7 +28,7 @@ class ExchangeService {
       }
     });
 
-    const exchanges = await prisma.exchange.findMany({
+    const initiator_exchanges = await prisma.exchange.findMany({
       where: { initiator_id },
       orderBy: { createdAt: 'desc' },
       select: {
@@ -44,7 +44,69 @@ class ExchangeService {
       }
     });
 
-    return exchanges;
+    const receiver_exchanges = await prisma.exchange.findMany({
+      where: { receiver_id },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        status: true,
+        createdAt: true,
+        initiator: {
+          select: { id: true, name: true }
+        },
+        receiver: {
+          select: { id: true, name: true }
+        }
+      }
+    });
+
+    return {
+      data: {
+        initiator_exchanges,
+        receiver_exchanges
+      }
+    };
+  }
+
+  async fetchExchanges(user_id: number) {
+    const initiator_exchanges = await prisma.exchange.findMany({
+      where: { initiator_id: user_id },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        status: true,
+        createdAt: true,
+        initiator: {
+          select: { id: true, name: true }
+        },
+        receiver: {
+          select: { id: true, name: true }
+        }
+      }
+    });
+
+    const receiver_exchanges = await prisma.exchange.findMany({
+      where: { receiver_id: user_id },
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        status: true,
+        createdAt: true,
+        initiator: {
+          select: { id: true, name: true }
+        },
+        receiver: {
+          select: { id: true, name: true }
+        }
+      }
+    });
+
+    return {
+      data: {
+        initiator_exchanges,
+        receiver_exchanges
+      }
+    };
   }
 }
 
